@@ -1,0 +1,114 @@
+version: '3.9'
+
+services:
+  ai-dev:
+    container_name: ${AIDEV_CONTAINER_NAME:-ai-dev}
+    image: ${AIDEV_CONTAINER_NAME:-ai-dev:latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        AIDEV_ROOT_PASSWORD: ${AIDEV_ROOT_PASSWORD:-changeme321}
+      secrets:
+        - ssh_key
+      # 使用 BuildKit 缓存
+      cache_from:
+        - type=registry,ref=ai-dev:latest
+
+    # 端口映射
+    ports:
+      - "${AIDEV_SSH_PORT:-1122}:22"
+
+    # 环境变量
+    environment:
+      - TZ=${TZ:-UTC}
+      - NODE_VERSION=${NODE_VERSION:-24.1.0}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GITHUB_TOKEN=${GITHUB_TOKEN:-}
+      - HTTP_PROXY=${HTTP_PROXY:-}
+      - HTTPS_PROXY=${HTTPS_PROXY:-}
+      - NO_PROXY=${NO_PROXY:-}
+
+    # 卷挂载
+    volumes:
+      # 工作目录挂载
+      - ${AIDEV_WORKSPACE:-./workspace}:/workspace
+
+      # SSH 配置持久化
+      - ssh_config:/root/.ssh
+
+      # 工具配置持久化
+      - codex_config:/root/.codex
+      - claude_config:/root/.claude
+      - npm_config:/root/.npm
+      - pip_config:/root/.cache/pip
+      - cargo_config:/root/.cargo
+      - go_config:/root/go
+
+      # Git 配置
+      - ${HOME}/.gitconfig:/root/.gitconfig:ro
+
+      # 挂载 Docker socket（可选，允许容器内操作宿主机 Docker）
+      # 注意：这会给容器访问宿主机 Docker 的权限，有安全风险
+      # - /var/run/docker.sock:/var/run/docker.sock
+
+    # 资源限制
+    deploy:
+      resources:
+        limits:
+          cpus: '${AIDEV_CPU_LIMIT:-4}'
+          memory: ${AIDEV_MEMORY_LIMIT:-8g}
+        reservations:
+          cpus: '1'
+          memory: 2g
+
+    # 重启策略
+    restart: unless-stopped
+
+    # 网络配置
+    networks:
+      - ai-dev-network
+
+    # 健康检查
+    healthcheck:
+      test: ["CMD", "pgrep", "sshd"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+    # 容器标签
+    labels:
+      - "com.aidev.description=AI Development Environment"
+      - "com.aidev.version=1.0"
+
+# 网络配置
+networks:
+  ai-dev-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+# 持久化卷
+volumes:
+  ssh_config:
+    driver: local
+  claude_config:
+    driver: local
+  codex_config:
+    driver: local
+  npm_config:
+    driver: local
+  pip_config:
+    driver: local
+  cargo_config:
+    driver: local
+  go_config:
+    driver: local
+
+# Secrets 配置
+secrets:
+  ssh_key:
+    file: ${SSH_KEY_PATH:-./id_rsa.pub}

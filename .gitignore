@@ -1,0 +1,81 @@
+# ============================================
+# AI Dev Environment - Git Ignore
+# ============================================
+
+# 环境变量和敏感信息
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+id_rsa*
+*.pub
+
+# Docker 相关
+docker-compose.override.yml
+.docker/
+
+# IDE 和编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 日志文件
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 依赖目录
+node_modules/
+.pnp/
+.pnp.js
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+ENV/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Go
+vendor/
+*.exe
+*.test
+*.out
+
+# Rust
+target/
+Cargo.lock
+
+# 临时文件和缓存
+tmp/
+temp/
+*.tmp
+*.cache
+.cache/
+
+# OS 生成文件
+Thumbs.db
+.DS_Store
+.Spotlight-V100
+.Trashes
+
+# 备份文件
+*.bak
+*.backup
+*.old
