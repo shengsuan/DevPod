@@ -29,6 +29,8 @@ services:
       - HTTP_PROXY=${HTTP_PROXY:-}
       - HTTPS_PROXY=${HTTPS_PROXY:-}
       - NO_PROXY=${NO_PROXY:-}
+      - SHENGSUANYUN_API_KEY=${SHENGSUANYUN_API_KEY}
+      - SHENGSUANYUN_CP_API_KEY=${SHENGSUANYUN_CP_API_KEY}
 
     # 卷挂载
     volumes:

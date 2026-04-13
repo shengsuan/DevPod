@@ -29,6 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     silversearcher-ag \
     jq \
     tree \
+    gettext-base \
     # 系统工具
     htop \
     tmux \
@@ -122,8 +123,16 @@ RUN pip3 install --no-cache-dir --upgrade pip setuptools wheel && \
     ruff \
     mypy \
     pytest \
+    aider-install \
     ipython
 
+ENV PATH="/root/.local/bin:${PATH}"
+RUN aider-install
+
+RUN mkdir -p /root/.coding-helper
+COPY coding-helper.config.template.yaml /root/.coding-helper/config.template.yaml
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # ---- SSH 服务配置 ----
 RUN mkdir -p /var/run/sshd /root/.ssh && \
@@ -154,4 +163,5 @@ SHELL ["/bin/bash", "-c"]
 VOLUME ["/workspace", "/root/.ssh"]
 
 EXPOSE 22
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/sbin/sshd", "-D", "-e"]

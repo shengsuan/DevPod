@@ -1,0 +1,14 @@
+lang: zh_CN
+plans:
+  ssy_cp_lite:
+    api_key: ${SHENGSUANYUN_CP_API_KEY}
+    model: anthropic/claude-sonnet-4.6
+  ssy_cp_pro:
+    api_key: ${SHENGSUANYUN_CP_API_KEY}
+    model: anthropic/claude-sonnet-4.6
+  ssy_cp_enterprise:
+    api_key: ${SHENGSUANYUN_CP_API_KEY}
+    model: anthropic/claude-sonnet-4.6
+  pay_as_you_go:
+    api_key: ${SHENGSUANYUN_API_KEY}
+    model: anthropic/claude-sonnet-4.6
