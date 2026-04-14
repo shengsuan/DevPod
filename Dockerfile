@@ -146,9 +146,7 @@ chmod 600 /root/.ssh/authorized_keys; \
 fi
 
 # 配置 SSH 服务
-ARG AIDEV_ROOT_PASSWORD=changeme
-RUN echo "root:${AIDEV_ROOT_PASSWORD}" | chpasswd && \
-sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
 sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
 sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
 
@@ -164,4 +162,3 @@ VOLUME ["/workspace", "/root/.ssh"]
 
 EXPOSE 22
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["/usr/sbin/sshd", "-D", "-e"]
