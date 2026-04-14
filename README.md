@@ -4,7 +4,7 @@
 
 ## ✨ 特性
 
-- ✅ **AI 编程工具**: Claude Code、Coding Helper
+- ✅ **AI 编程工具**: Claude Code、Codex, Aider, Coding Helper
 - ✅ **多语言支持**: Node.js、Python、Go、Rust
 - ✅ **开发工具**: Git、GitHub CLI、Docker CLI、Kubernetes CLI
 - ✅ **搜索工具**: ripgrep、fd、ag、jq
@@ -121,6 +121,7 @@ git config --global user.email "your.email@example.com"
 ## 🛠️ 内置工具
 
 ### AI 编程工具
+- **Aider**: AI 编程助手
 - **Codex**: OpenAI 的 AI 编程助手
 - **Claude Code**: Anthropic 的 AI 编程助手
 - **Coding Helper**: API Key 和模型配置工具
@@ -187,6 +188,8 @@ AIDEV_MEMORY_LIMIT=8g                  # 内存限制
 ANTHROPIC_API_KEY=your_key             # Claude API Key
 OPENAI_API_KEY=your_key                # OpenAI API Key
 GITHUB_TOKEN=your_token                # GitHub Token
+SHENGSUANYUN_API_KEY=your_token        # 胜算云 API Key
+SHENGSUANYUN_CP_API_KEY=your_token     # 胜算云 coding plan API Key
 ```
 
 ### 持久化卷
@@ -333,13 +336,3 @@ make prune
 ## 📄 许可证
 
 MIT License
-
----
-
-## 🌟 致谢
-
-感谢以下项目和工具：
-- [Claude Code](https://claude.ai/code)
-- [Docker](https://www.docker.com/)
-- [GitHub CLI](https://cli.github.com/)
-- 所有开源贡献者
