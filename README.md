@@ -1,10 +1,9 @@
-<p align="center">
-    <img src="assets/DevPod.jpeg" alt="devpod Logo" width="300">
-</p>
-
 <h1 align="center">
     AI Coding Dev Container 
 </h1>
+<p align="center">
+    <img src="assets/DevPod.jpeg" alt="devpod Logo" width="300">
+</p>
 
 一个功能完整的 AI 编程开发环境容器，内置多种 AI 工具和开发工具链。
 
