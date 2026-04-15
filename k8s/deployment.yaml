@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: aidev
+  name: aidev
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aidev
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: aidev
+    spec:
+      containers:
+      - image: ai-dev:latest
+        name: aidev
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 22
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "2"
+            memory: "2048Mi"
+          requests:
+            cpu: "1"
+            memory: "1024Mi"
+        env:
+        - name: TZ
+          value: Asia/Shanghai
+        - name: NODE_VERSION
+          value: "24.1.0"
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aidev-secrets
+              key: anthropic-api-key
+              optional: true
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aidev-secrets
+              key: openai-api-key
+              optional: true
+        - name: GITHUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: aidev-secrets
+              key: github-token
+              optional: true
+        - name: SHENGSUANYUN_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aidev-secrets
+              key: shengsuanyun-api-key
+              optional: true
+        - name: SHENGSUANYUN_CP_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aidev-secrets
+              key: shengsuanyun-cp-api-key
+              optional: true
+        - name: AIDEV_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: aidev-secrets
+              key: root-password
+        - name: HTTP_PROXY
+          value: ""
+        - name: HTTPS_PROXY
+          value: ""
+        - name: NO_PROXY
+          value: ""
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+        - name: ssh-config
+          mountPath: /root/.ssh
+        livenessProbe:
+          exec:
+            command:
+            - pgrep
+            - sshd
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 3
+        readinessProbe:
+          exec:
+            command:
+            - pgrep
+            - sshd
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      volumes:
+      - name: workspace
+        persistentVolumeClaim:
+          claimName: aidev-workspace
+      - name: ssh-config
+        secret:
+          secretName: aidev-ssh-key
+          defaultMode: 0600
+status: {}
