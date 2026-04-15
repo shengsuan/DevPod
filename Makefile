@@ -62,11 +62,11 @@ logs:
 	docker-compose logs -f --tail=100
 
 shell:
-	docker-compose exec ai-dev bash
+	docker-compose exec dev-pod bash
 
 ssh:
 	@echo "🔐 SSH 连接到容器..."
-	@SSH_PORT=$$(grep AIDEV_SSH_PORT .env | cut -d '=' -f2 || echo "1122"); \
+	@SSH_PORT=$$(grep DEVPOD_SSH_PORT .env | cut -d '=' -f2 || echo "1122"); \
 	ssh -p $$SSH_PORT root@localhost
 
 status:
@@ -76,7 +76,7 @@ status:
 clean:
 	@echo "🧹 清理所有资源..."
 	docker-compose down -v
-	docker rmi ai-dev || true
+	docker rmi dev-pod || true
 	@echo "✅ 清理完成"
 
 prune:
@@ -115,7 +115,7 @@ SSH_KEY_PATH ?= ./id_rsa.pub
 
 k8s-build:
 	@echo "🔨 构建 K8s 镜像..."
-	docker build -t ai-dev:latest .
+	docker build -t dev-pod:latest .
 	@echo "✅ 镜像构建完成"
 
 k8s-create-secret:
@@ -124,9 +124,9 @@ k8s-create-secret:
 		echo "❌ .env 文件不存在"; \
 		exit 1; \
 	fi
-	@. ./.env && kubectl create secret generic aidev-secrets \
+	@. ./.env && kubectl create secret generic devpod-secrets \
 		--namespace=$(K8S_NAMESPACE) \
-		--from-literal=root-password="$${AIDEV_ROOT_PASSWORD:-changeme321}" \
+		--from-literal=root-password="$${DEVPOD_ROOT_PASSWORD:-changeme321}" \
 		--from-literal=anthropic-api-key="$${ANTHROPIC_API_KEY:-}" \
 		--from-literal=openai-api-key="$${OPENAI_API_KEY:-}" \
 		--from-literal=github-token="$${GITHUB_TOKEN:-}" \
@@ -135,7 +135,7 @@ k8s-create-secret:
 		--dry-run=client -o yaml | kubectl apply -f -
 	@. ./.env && SSH_KEY="$${SSH_KEY_PATH:-./id_rsa.pub}"; \
 	if [ -f "$$SSH_KEY" ]; then \
-		kubectl create secret generic aidev-ssh-key \
+		kubectl create secret generic devpod-ssh-key \
 			--namespace=$(K8S_NAMESPACE) \
 			--from-file=authorized_keys="$$SSH_KEY" \
 			--dry-run=client -o yaml | kubectl apply -f -; \
@@ -164,29 +164,29 @@ k8s-delete:
 
 k8s-restart:
 	@echo "🔄 重启 K8s Pod..."
-	kubectl rollout restart deployment/aidev --namespace=$(K8S_NAMESPACE)
-	kubectl rollout status deployment/aidev --namespace=$(K8S_NAMESPACE)
+	kubectl rollout restart deployment/devpod --namespace=$(K8S_NAMESPACE)
+	kubectl rollout status deployment/devpod --namespace=$(K8S_NAMESPACE)
 	@echo "✅ 重启完成"
 
 k8s-logs:
 	@echo "📋 查看 K8s Pod 日志..."
-	kubectl logs -f --namespace=$(K8S_NAMESPACE) -l app=aidev --tail=100
+	kubectl logs -f --namespace=$(K8S_NAMESPACE) -l app=devpod --tail=100
 
 k8s-status:
 	@echo "📊 K8s 资源状态："
 	@echo ""
 	@echo "Pods:"
-	@kubectl get pods --namespace=$(K8S_NAMESPACE) -l app=aidev
+	@kubectl get pods --namespace=$(K8S_NAMESPACE) -l app=devpod
 	@echo ""
 	@echo "Services:"
-	@kubectl get svc --namespace=$(K8S_NAMESPACE) -l app=aidev
+	@kubectl get svc --namespace=$(K8S_NAMESPACE) -l app=devpod
 	@echo ""
 	@echo "Deployments:"
-	@kubectl get deployment --namespace=$(K8S_NAMESPACE) -l app=aidev
+	@kubectl get deployment --namespace=$(K8S_NAMESPACE) -l app=devpod
 
 k8s-exec:
 	@echo "🔧 进入 K8s Pod..."
-	@POD=$$(kubectl get pod --namespace=$(K8S_NAMESPACE) -l app=aidev -o jsonpath='{.items[0].metadata.name}'); \
+	@POD=$$(kubectl get pod --namespace=$(K8S_NAMESPACE) -l app=devpod -o jsonpath='{.items[0].metadata.name}'); \
 	kubectl exec -it --namespace=$(K8S_NAMESPACE) $$POD -- bash
 
 k8s-update:
@@ -194,33 +194,33 @@ k8s-update:
 	kubectl apply -f k8s/configmap.yaml --namespace=$(K8S_NAMESPACE)
 	kubectl apply -f k8s/deployment.yaml --namespace=$(K8S_NAMESPACE)
 	kubectl apply -f k8s/service.yaml --namespace=$(K8S_NAMESPACE)
-	kubectl rollout status deployment/aidev --namespace=$(K8S_NAMESPACE)
+	kubectl rollout status deployment/devpod --namespace=$(K8S_NAMESPACE)
 	@echo "✅ 更新完成"
 
 k8s-scale:
 	@echo "⚖️  扩缩容到 $(REPLICAS) 个副本..."
-	kubectl scale deployment/aidev --namespace=$(K8S_NAMESPACE) --replicas=$(REPLICAS)
+	kubectl scale deployment/devpod --namespace=$(K8S_NAMESPACE) --replicas=$(REPLICAS)
 	@echo "✅ 扩缩容完成"
 
 k8s-rollback:
 	@echo "⏪ 回滚部署..."
-	kubectl rollout undo deployment/aidev --namespace=$(K8S_NAMESPACE)
-	kubectl rollout status deployment/aidev --namespace=$(K8S_NAMESPACE)
+	kubectl rollout undo deployment/devpod --namespace=$(K8S_NAMESPACE)
+	kubectl rollout status deployment/devpod --namespace=$(K8S_NAMESPACE)
 	@echo "✅ 回滚完成"
 
 k8s-port-forward:
 	@echo "🔌 端口转发 $(PORT):22..."
-	@POD=$$(kubectl get pod --namespace=$(K8S_NAMESPACE) -l app=aidev -o jsonpath='{.items[0].metadata.name}'); \
+	@POD=$$(kubectl get pod --namespace=$(K8S_NAMESPACE) -l app=devpod -o jsonpath='{.items[0].metadata.name}'); \
 	kubectl port-forward --namespace=$(K8S_NAMESPACE) $$POD $(PORT):22
 
 k8s-clean:
 	@echo "🧹 清理 K8s 资源..."
 	@make k8s-delete
-	kubectl delete secret aidev-secrets --namespace=$(K8S_NAMESPACE) --ignore-not-found
-	kubectl delete secret aidev-ssh-key --namespace=$(K8S_NAMESPACE) --ignore-not-found
+	kubectl delete secret devpod-secrets --namespace=$(K8S_NAMESPACE) --ignore-not-found
+	kubectl delete secret devpod-ssh-key --namespace=$(K8S_NAMESPACE) --ignore-not-found
 	@echo "✅ 清理完成"
 
 k8s-describe:
 	@echo "🔍 描述 K8s 资源..."
-	@POD=$$(kubectl get pod --namespace=$(K8S_NAMESPACE) -l app=aidev -o jsonpath='{.items[0].metadata.name}'); \
+	@POD=$$(kubectl get pod --namespace=$(K8S_NAMESPACE) -l app=devpod -o jsonpath='{.items[0].metadata.name}'); \
 	kubectl describe pod --namespace=$(K8S_NAMESPACE) $$POD

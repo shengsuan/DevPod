@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: aidev-ssh
+  name: devpod-ssh
   namespace: default
 spec:
   type: NodePort
   selector:
-    app: aidev  # 必须与 Deployment 中的 label 匹配
+    app: devpod  # 必须与 Deployment 中的 label 匹配
   ports:
     - protocol: TCP
       port: 22       # Service 内部端口

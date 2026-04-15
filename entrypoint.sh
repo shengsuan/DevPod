@@ -12,8 +12,8 @@ if command -v coding-helper &> /dev/null; then
     echo "✓ Set coding-helper default plans to pay_as_you_go"
 fi
 
-if [ -n "$AIDEV_ROOT_PASSWORD" ]; then
-    echo "root:${AIDEV_ROOT_PASSWORD}" | chpasswd
+if [ -n "$DEVPOD_ROOT_PASSWORD" ]; then
+    echo "root:${DEVPOD_ROOT_PASSWORD}" | chpasswd
 fi
 
 exec /usr/sbin/sshd -D

@@ -58,7 +58,7 @@ else
 fi
 
 # 检查密码是否为默认值
-if grep -q "AIDEV_ROOT_PASSWORD=changeme" .env 2>/dev/null; then
+if grep -q "DEVPOD_ROOT_PASSWORD=changeme" .env 2>/dev/null; then
     echo -e "${RED}"
     echo "⚠️  警告：检测到使用默认密码 'changeme'"
     echo "   强烈建议修改密码！"
@@ -115,7 +115,7 @@ echo "================================================"
 echo -e "${NC}"
 
 # 获取配置信息
-SSH_PORT=$(grep AIDEV_SSH_PORT .env | cut -d '=' -f2 || echo "1122")
+SSH_PORT=$(grep DEVPOD_SSH_PORT .env | cut -d '=' -f2 || echo "1122")
 
 echo "容器信息："
 docker-compose ps
@@ -124,7 +124,7 @@ echo
 echo -e "${GREEN}连接方式：${NC}"
 echo
 echo "1. 直接进入 bash："
-echo -e "   ${YELLOW}docker-compose exec ai-dev bash${NC}"
+echo -e "   ${YELLOW}docker-compose exec dev-pod bash${NC}"
 echo -e "   或 ${YELLOW}make shell${NC}"
 echo
 echo "2. SSH 连接："

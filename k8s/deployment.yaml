@@ -2,23 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: aidev
-  name: aidev
+    app: devpod
+  name: devpod
   namespace: default
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: aidev
+      app: devpod
   strategy: {}
   template:
     metadata:
       labels:
-        app: aidev
+        app: devpod
     spec:
       containers:
-      - image: ai-dev:latest
-        name: aidev
+      - image: dev-pod:latest
+        name: devpod
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 22
@@ -38,37 +38,37 @@ spec:
         - name: ANTHROPIC_API_KEY
           valueFrom:
             secretKeyRef:
-              name: aidev-secrets
+              name: devpod-secrets
               key: anthropic-api-key
               optional: true
         - name: OPENAI_API_KEY
           valueFrom:
             secretKeyRef:
-              name: aidev-secrets
+              name: devpod-secrets
               key: openai-api-key
               optional: true
         - name: GITHUB_TOKEN
           valueFrom:
             secretKeyRef:
-              name: aidev-secrets
+              name: devpod-secrets
               key: github-token
               optional: true
         - name: SHENGSUANYUN_API_KEY
           valueFrom:
             secretKeyRef:
-              name: aidev-secrets
+              name: devpod-secrets
               key: shengsuanyun-api-key
               optional: true
         - name: SHENGSUANYUN_CP_API_KEY
           valueFrom:
             secretKeyRef:
-              name: aidev-secrets
+              name: devpod-secrets
               key: shengsuanyun-cp-api-key
               optional: true
-        - name: AIDEV_ROOT_PASSWORD
+        - name: DEVPOD_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: aidev-secrets
+              name: devpod-secrets
               key: root-password
         - name: HTTP_PROXY
           value: ""
@@ -99,9 +99,9 @@ spec:
       volumes:
       - name: workspace
         persistentVolumeClaim:
-          claimName: aidev-workspace
+          claimName: devpod-workspace
       - name: ssh-config
         secret:
-          secretName: aidev-ssh-key
+          secretName: devpod-ssh-key
           defaultMode: 0600
 status: {}

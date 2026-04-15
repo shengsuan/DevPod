@@ -1,23 +1,23 @@
 version: '3.9'
 
 services:
-  ai-dev:
-    container_name: ${AIDEV_CONTAINER_NAME:-ai-dev}
-    image: ${AIDEV_CONTAINER_NAME:-ai-dev:latest}
+  dev-pod:
+    container_name: ${DEVPOD_CONTAINER_NAME:-dev-pod}
+    image: ${DEVPOD_CONTAINER_NAME:-dev-pod:latest}
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        AIDEV_ROOT_PASSWORD: ${AIDEV_ROOT_PASSWORD:-changeme321}
+        DEVPOD_ROOT_PASSWORD: ${DEVPOD_ROOT_PASSWORD:-changeme321}
       secrets:
         - ssh_key
       # 使用 BuildKit 缓存
       cache_from:
-        - type=registry,ref=ai-dev:latest
+        - type=registry,ref=dev-pod:latest
 
     # 端口映射
     ports:
-      - "${AIDEV_SSH_PORT:-1122}:22"
+      - "${DEVPOD_SSH_PORT:-1122}:22"
 
     # 环境变量
     environment:
@@ -31,12 +31,12 @@ services:
       - NO_PROXY=${NO_PROXY:-}
       - SHENGSUANYUN_API_KEY=${SHENGSUANYUN_API_KEY}
       - SHENGSUANYUN_CP_API_KEY=${SHENGSUANYUN_CP_API_KEY}
-      - AIDEV_ROOT_PASSWORD=${AIDEV_ROOT_PASSWORD:-changeme321}
+      - DEVPOD_ROOT_PASSWORD=${DEVPOD_ROOT_PASSWORD:-changeme321}
 
     # 卷挂载
     volumes:
       # 工作目录挂载
-      - ${AIDEV_WORKSPACE:-./workspace}:/workspace
+      - ${DEVPOD_WORKSPACE:-./workspace}:/workspace
 
       # SSH 配置持久化
       - ssh_config:/root/.ssh
@@ -60,8 +60,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '${AIDEV_CPU_LIMIT:-4}'
-          memory: ${AIDEV_MEMORY_LIMIT:-8g}
+          cpus: '${DEVPOD_CPU_LIMIT:-4}'
+          memory: ${DEVPOD_MEMORY_LIMIT:-8g}
         reservations:
           cpus: '1'
           memory: 2g
@@ -71,7 +71,7 @@ services:
 
     # 网络配置
     networks:
-      - ai-dev-network
+      - dev-pod-network
 
     # 健康检查
     healthcheck:
@@ -83,12 +83,12 @@ services:
 
     # 容器标签
     labels:
-      - "com.aidev.description=AI Development Environment"
-      - "com.aidev.version=1.0"
+      - "com.devpod.description=AI Development Environment"
+      - "com.devpod.version=1.0"
 
 # 网络配置
 networks:
-  ai-dev-network:
+  dev-pod-network:
     driver: bridge
     ipam:
       config:

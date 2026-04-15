@@ -1,4 +1,4 @@
-# AI Dev Environment 🤖
+# AI Coding Dev Container 
 
 一个功能完整的 AI 编程开发环境容器，内置多种 AI 工具和开发工具链。
 
@@ -73,7 +73,7 @@ docker-compose up -d
 # 方式一：直接进入 bash
 make shell
 # 或
-docker-compose exec ai-dev bash
+docker-compose exec dev-pod bash
 
 # 方式二：SSH 连接
 make ssh
@@ -173,16 +173,16 @@ git config --global user.email "your.email@example.com"
 
 ```bash
 # SSH 配置
-AIDEV_SSH_PORT=1122                    # SSH 端口
-AIDEV_ROOT_PASSWORD=changeme           # Root 密码（务必修改！）
+DEVPOD_SSH_PORT=1122                    # SSH 端口
+DEVPOD_ROOT_PASSWORD=changeme           # Root 密码（务必修改！）
 
 # 容器配置
-AIDEV_CONTAINER_NAME=ai-dev            # 容器名称
-AIDEV_WORKSPACE=/path/to/workspace     # 工作目录路径
+DEVPOD_CONTAINER_NAME=dev-pod            # 容器名称
+DEVPOD_WORKSPACE=/path/to/workspace     # 工作目录路径
 
 # 资源限制
-AIDEV_CPU_LIMIT=4                      # CPU 核心数
-AIDEV_MEMORY_LIMIT=8g                  # 内存限制
+DEVPOD_CPU_LIMIT=4                      # CPU 核心数
+DEVPOD_MEMORY_LIMIT=8g                  # 内存限制
 
 # API Keys（可选）
 ANTHROPIC_API_KEY=your_key             # Claude API Key
@@ -240,7 +240,7 @@ make status
 make logs
 
 # 检查端口映射
-docker port ai-dev
+docker port dev-pod
 ```
 
 ### 权限问题
@@ -287,7 +287,7 @@ make down
 
 ```bash
 # 在 .env 中配置工作目录
-AIDEV_WORKSPACE=/Users/you/projects
+DEVPOD_WORKSPACE=/Users/you/projects
 ```
 
 ---

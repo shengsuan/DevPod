@@ -53,7 +53,7 @@ chmod 600 .env
 - 扫描镜像漏洞：
 
 ```bash
-docker scan ai-dev
+docker scan dev-pod
 ```
 
 - 使用官方源安装软件包
@@ -77,7 +77,7 @@ docker scan ai-dev
 make logs
 
 # 实时监控
-docker stats ai-dev
+docker stats dev-pod
 ```
 
 ### 9. 备份
@@ -86,10 +86,10 @@ docker stats ai-dev
 
 ```bash
 # 备份持久化卷
-docker run --rm --volumes-from ai-dev -v $(pwd):/backup ubuntu tar czf /backup/backup.tar.gz /workspace
+docker run --rm --volumes-from dev-pod -v $(pwd):/backup ubuntu tar czf /backup/backup.tar.gz /workspace
 
 # 恢复
-docker run --rm --volumes-from ai-dev -v $(pwd):/backup ubuntu tar xzf /backup/backup.tar.gz -C /
+docker run --rm --volumes-from dev-pod -v $(pwd):/backup ubuntu tar xzf /backup/backup.tar.gz -C /
 ```
 
 ### 10. 生产环境建议
