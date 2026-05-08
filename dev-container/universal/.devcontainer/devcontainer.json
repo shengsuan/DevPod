@@ -60,7 +60,8 @@
             "version": "latest"
         },
         "ghcr.io/devcontainers/features/go:1": {
-            "version": "latest"
+            "version": "latest",
+            "installGolangCI Lint": false
         },
         "ghcr.io/devcontainers/features/oryx:2": "latest",
         "./local-features/setup-user": "latest",
