@@ -68,8 +68,8 @@
         "ghcr.io/shengsuan/features/agent:1": {
             "claudeCodeVersion": "latest",
             "installCodex": true,
-            "installNode": true,
-            "installPython": true
+            "installNode": false,
+            "installPython": false
         }
     },
     "appPort": ["2222:22"],
@@ -88,7 +88,7 @@
         "ghcr.io/devcontainers/features/github-cli",
         "ghcr.io/devcontainers/features/docker-in-docker",
         "ghcr.io/devcontainers/features/kubectl-helm-minikube",
-        "ghcr.io/shengsuan/features/go-tidy:1",
+        "ghcr.io/shengsuan/features/go-tidy",
         "ghcr.io/devcontainers/features/oryx",
         "ghcr.io/shengsuan/features/agent:1",
         "./local-features/setup-user"
