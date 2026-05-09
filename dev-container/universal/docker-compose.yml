@@ -15,9 +15,9 @@ services:
       TZ: ${TIMEZONE:-Asia/Shanghai}
       START_SSHD: "true"
       SSHD_PORT: "22"
-      USERNAME: "codespace"
-      NEW_PASSWORD: "random"
-      GATEWAY_PORTS: "yes"
+      USERNAME: ${SSH_USERNAME:-codespace}
+      NEW_PASSWORD: ${SSH_PASSWORD:?SSH_PASSWORD must be set in .env file}
+      GATEWAY_PORTS: ${GATEWAY_PORTS:-yes}
 
     volumes:
       - ./workspace:/workspace
