@@ -13,6 +13,11 @@ services:
 
     environment:
       TZ: ${TIMEZONE:-Asia/Shanghai}
+      START_SSHD: "true"
+      SSHD_PORT: "22"
+      USERNAME: "codespace"
+      NEW_PASSWORD: "random"
+      GATEWAY_PORTS: "yes"
 
     volumes:
       - ./workspace:/workspace
@@ -22,6 +27,7 @@ services:
     tty: true
     stdin_open: true
     privileged: true
+    command: /bin/sh -c "/usr/local/share/ssh-init.sh && tail -f /dev/null"
 
 volumes:
   vsc-home:
