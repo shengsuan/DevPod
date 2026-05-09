@@ -23,7 +23,7 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY:-none}
       OPENAI_BASE_URL: ${OPENAI_BASE_URL:-none}
       ANTHROPIC_BASE_URL: ${ANTHROPIC_BASE_URL:-none}
-dk 
+
     volumes:
       - ./workspace:/workspace
       - vsc-home:/home/dev
