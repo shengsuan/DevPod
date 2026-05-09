@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  devpod:
+    image: vsc-universal
+    container_name: vsc-universal
+
+    restart: unless-stopped
+    ports:
+      - "${SSHD_PORT:-2222}:22"
+
+    working_dir: /workspace
+
+    environment:
+      TZ: ${TIMEZONE:-Asia/Shanghai}
+
+    volumes:
+      - ./workspace:/workspace
+      - vsc-home:/home/dev
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    tty: true
+    stdin_open: true
+    privileged: true
+
+volumes:
+  vsc-home:
