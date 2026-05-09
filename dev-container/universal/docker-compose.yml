@@ -27,7 +27,7 @@ services:
     tty: true
     stdin_open: true
     privileged: true
-    command: /bin/sh -c "/usr/local/share/ssh-init.sh && tail -f /dev/null"
+    command: /bin/sh -c "echo \"${SSH_USERNAME}:${SSH_PASSWORD}\" | chpasswd && /usr/local/share/ssh-init.sh && /usr/local/bin/configure-agent-runtime && tail -f /dev/null"
 
 volumes:
   vsc-home:
