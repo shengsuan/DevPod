@@ -65,7 +65,7 @@
         "ghcr.io/devcontainers/features/oryx:2": "latest",
         "./local-features/setup-user": "latest",
         "./local-features/patch-python": {},
-        "ghcr.io/shengsuan/features/agent:2": {
+        "ghcr.io/shengsuan/features/agent:2.0.1": {
             "claudeCodeVersion": "latest",
             "installCodex": true,
             "installNode": false
@@ -89,7 +89,7 @@
         "ghcr.io/devcontainers/features/kubectl-helm-minikube",
         "ghcr.io/shengsuan/features/go-tidy",
         "ghcr.io/devcontainers/features/oryx",
-        "ghcr.io/shengsuan/features/agent:2",
+        "ghcr.io/shengsuan/features/agent:2.0.1",
         "./local-features/setup-user"
     ],
     "remoteUser": "codespace",
