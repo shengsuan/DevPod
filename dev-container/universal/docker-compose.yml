@@ -18,7 +18,12 @@ services:
       USERNAME: ${SSH_USERNAME:-codespace}
       NEW_PASSWORD: ${SSH_PASSWORD:?SSH_PASSWORD must be set in .env file}
       GATEWAY_PORTS: ${GATEWAY_PORTS:-yes}
-
+      SHENGSUANYUN_API_KEY: ${SHENGSUANYUN_API_KEY:-none}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-none}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-none}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-none}
+      ANTHROPIC_BASE_URL: ${ANTHROPIC_BASE_URL:-none}
+dk 
     volumes:
       - ./workspace:/workspace
       - vsc-home:/home/dev
