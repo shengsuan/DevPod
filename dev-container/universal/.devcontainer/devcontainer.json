@@ -95,7 +95,13 @@
     ],
     "remoteUser": "codespace",
     "containerUser": "codespace",
-
+    "containerEnv": {  
+        "SSHD_PORT": "22",  
+        "USERNAME": "codespace",   
+        "START_SSHD": "true",  
+        "NEW_PASSWORD": "random",  
+        "GATEWAY_PORTS": "yes"  
+    },
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
     // "forwardPorts": [],
 
