@@ -23,6 +23,8 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY:-none}
       OPENAI_BASE_URL: ${OPENAI_BASE_URL:-none}
       ANTHROPIC_BASE_URL: ${ANTHROPIC_BASE_URL:-none}
+      CI: "true"
+      NO_COLOR: "1"
 
     volumes:
       - ./workspace:/workspace
@@ -32,7 +34,7 @@ services:
     tty: true
     stdin_open: true
     privileged: true
-    command: /bin/sh -c "echo \"${SSH_USERNAME}:${SSH_PASSWORD}\" | chpasswd && /usr/local/share/ssh-init.sh && /usr/local/bin/configure-agent-runtime && tail -f /dev/null"
+    command: /bin/sh -c "echo \"${SSH_USERNAME}:${SSH_PASSWORD}\" | chpasswd && /usr/local/share/ssh-init.sh && /usr/local/bin/configure-agent-runtime 2>&1 | head -n 100 && tail -f /dev/null"
 
 volumes:
   vsc-home:
