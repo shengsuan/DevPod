@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   devpod:
-    image: vsc-universal
+    image: ${DEVPOD_IMAGE:-vsc-universal:latest}
     container_name: devpod
 
     restart: unless-stopped
@@ -23,6 +23,8 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY:-none}
       OPENAI_BASE_URL: ${OPENAI_BASE_URL:-none}
       ANTHROPIC_BASE_URL: ${ANTHROPIC_BASE_URL:-none}
+      CODEX_DEFAULT_MODEL: ${CODEX_DEFAULT_MODEL:-none}
+      CLAUDE_CODE_DEFAULT_MODEL: ${CLAUDE_CODE_DEFAULT_MODEL:-none}
       CI: "true"
       NO_COLOR: "1"
 
